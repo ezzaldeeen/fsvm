@@ -11,29 +11,30 @@ func (e Canceled) event()  {}
 func (e Purchased) event() {}
 
 type (
-	// Pending ...
+	// Pending event when the user start interacting
+	// with the vending machine, i.e. the initial event
 	Pending struct {
 		orderID string
 	}
 
-	// Selected ...
+	// Selected event when the product selected in that order
 	Selected struct {
 		orderID   string
 		productID string
 	}
 
-	// Deposited ...
+	// Deposited event when the money for that order deposited
 	Deposited struct {
 		orderID string
 		amount  uint
 	}
 
-	// Canceled ...
+	// Canceled event when the order is canceled
 	Canceled struct {
 		orderID string
 	}
 
-	// Purchased ...
+	// Purchased event when the order is completed
 	Purchased struct {
 		orderID string
 	}

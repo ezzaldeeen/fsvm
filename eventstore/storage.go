@@ -5,23 +5,25 @@ type Event interface {
 	event()
 }
 
+type Events []Event
+
 // EventStore dummy event storage
 type EventStore struct {
-	kv map[string]Event
+	kv map[string]Events
 }
 
 // NewEventStore factory function to instantiate EventStore
-func NewEventStore(kv map[string]Event) *EventStore {
-	return &EventStore{kv: kv}
+func NewEventStore(kv map[string]Events) EventStore {
+	return EventStore{kv: kv}
 }
 
 // Save adds an event to the EventStore
-func (e *EventStore) Save(key string, event Event) {
-	e.kv[key] = event
+func (e *EventStore) Save(key string, events Events) {
+	e.kv[key] = events
 }
 
 // Load retrieves an event from the EventStore by key
-func (e *EventStore) Load(key string) (Event, bool) {
-	event, found := e.kv[key]
-	return event, found
+func (e *EventStore) Load(key string) (Events, bool) {
+	events, found := e.kv[key]
+	return events, found
 }

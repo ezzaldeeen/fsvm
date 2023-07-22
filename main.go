@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
-
 func main() {
-	fmt.Println("Hello fsvm...")
+	//kv := make(map[string]eventstore.Events)
+	//storage := eventstore.NewEventStore(kv)
+	//svc := order.NewService(storage)
+
+	//svc.SelectProduct()
 }

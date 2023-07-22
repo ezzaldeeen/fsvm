@@ -2,7 +2,7 @@ package order
 
 import "errors"
 
-// Select ...
+// Select command for validating, and raising Selected event
 func (o *Order) Select(productID string) error {
 	if o.state == CANCELED { // todo: is it correct?
 		return errors.New("unable to select since the order canceled")
@@ -14,7 +14,7 @@ func (o *Order) Select(productID string) error {
 	return nil
 }
 
-// Deposit ...
+// Deposit command for validating, and raising Deposited event
 func (o *Order) Deposit(amount uint) error {
 	if o.state == CANCELED {
 		return errors.New("unable to deposit, select first") // todo: change this dummy logic
@@ -26,7 +26,7 @@ func (o *Order) Deposit(amount uint) error {
 	return nil
 }
 
-// Cancel ...
+// Cancel command for validating, and raising Canceled event
 func (o *Order) Cancel() {
 	o.raise(Canceled{
 		orderID: o.id,

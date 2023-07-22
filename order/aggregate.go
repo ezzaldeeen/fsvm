@@ -1,6 +1,11 @@
 package order
 
+import "github.com/google/uuid"
+
+// State represents the order's state
 type State string
+
+// History chain of ordered events
 type History []Event
 
 const (
@@ -11,9 +16,10 @@ const (
 	PURCHASED State = "PURCHASED"
 )
 
-// Order ...
+// Order represents the session in vending machine,
+// where each session has only one order
 type Order struct {
-	id        string // todo: use uuid
+	id        string
 	productID string
 	state     State
 	balance   uint
@@ -21,47 +27,51 @@ type Order struct {
 	version   uint
 }
 
+// NewOrder create new order with PENDING (initial) event
 func NewOrder() *Order {
-	return &Order{
-		id:      "", // todo: use uuid
-		state:   "", // todo: set default state (initial)
-		balance: 0,
-		history: nil,
-		version: 0,
-	}
+	o := &Order{}
+	o.raise(Pending{
+		orderID: uuid.NewString(),
+	})
+	return o
 }
 
-// Replay ...
+// Replay rewind the final state from all previous states
 func Replay(history History) *Order {
-	return nil // todo: implement
+	o := &Order{}
+	for _, event := range history {
+		o.on(event, false)
+	}
+	return o
 }
 
-// GetID ID ...
+// GetID getting the id of the order
 func (o *Order) GetID() string {
 	return o.id
 }
 
-// GetState State ...
+// GetState getting the state of the order
 func (o *Order) GetState() State {
 	return o.state
 }
 
-// GetHistory ...
+// GetHistory getting the event history of the order
 func (o *Order) GetHistory() History {
 	return o.history
 }
 
-// GetVersion Version ...
+// GetVersion getting the version of the order
+// used for optimistic concurrency
 func (o *Order) GetVersion() uint {
 	return o.version
 }
 
 // on ..
-func (o *Order) on(event Event) { // todo: implement versioning
+func (o *Order) on(event Event, new bool) {
 	switch e := event.(type) {
 	case Pending:
 		o.id = e.orderID
-		o.state = SELECTED
+		o.state = PENDING
 	case Selected:
 		o.id = e.orderID
 		o.productID = e.productID
@@ -77,10 +87,13 @@ func (o *Order) on(event Event) { // todo: implement versioning
 		o.id = e.orderID
 		o.state = PURCHASED
 	}
+	if !new {
+		o.version++
+	}
 }
 
-// raise ..
+// raise new event over the chain (History)
 func (o *Order) raise(event Event) {
 	o.history = append(o.history, event)
-	o.on(event)
+	o.on(event, true)
 }
