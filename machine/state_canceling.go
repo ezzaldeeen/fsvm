@@ -2,28 +2,33 @@ package machine
 
 import "errors"
 
-type Cancel struct {
+// Canceling ...
+type Canceling struct {
 	machine *Machine
 }
 
-func (c Cancel) Select(_ string) error {
+// Select represents the selecting action on this state
+func (c Canceling) Select(_ string) error {
 	return errors.New(
 		"unable to select, canceling in progress",
 	)
 }
 
-func (c Cancel) Deposit(_ float64) error {
+// Deposit represents the depositing action on this state
+func (c Canceling) Deposit(_ float64) error {
 	return errors.New(
 		"unable to select, canceling in progress",
 	)
 }
 
-func (c Cancel) Dispense() error {
+// Dispense represents the dispensing action on this state
+func (c Canceling) Dispense() error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (c Cancel) Cancel() error {
+// Cancel represents the canceling action on this state
+func (c Canceling) Cancel() error {
 	//TODO implement me
 	panic("implement me")
 }

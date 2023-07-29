@@ -5,6 +5,7 @@ import (
 	"log"
 )
 
+// Selecting ...
 type Selecting struct {
 	machine *Machine
 }

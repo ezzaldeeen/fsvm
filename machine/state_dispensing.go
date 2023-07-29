@@ -7,22 +7,26 @@ import (
 	"time"
 )
 
+// Dispensing ...
 type Dispensing struct {
 	machine *Machine
 }
 
+// Select represents the selecting action on this state
 func (s Dispensing) Select(_ string) error {
 	return fmt.Errorf(
 		"unable to select, dispensing in progress",
 	)
 }
 
+// Deposit represents the depositing action on this state
 func (s Dispensing) Deposit(_ float64) error {
 	return fmt.Errorf(
 		"unable to deposit, dispensing in progress",
 	)
 }
 
+// Dispense represents the dispensing action on this state
 func (s Dispensing) Dispense() error {
 	log.Println("Dispensing...")
 	time.Sleep(1 * time.Second)
@@ -42,6 +46,7 @@ func (s Dispensing) Dispense() error {
 	return nil
 }
 
+// Cancel represents the canceling action on this state
 func (s Dispensing) Cancel() error {
 	return fmt.Errorf(
 		"unable to cancel, dispensing in progress",

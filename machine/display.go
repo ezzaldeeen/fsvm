@@ -5,6 +5,7 @@ import (
 	"strconv"
 )
 
+// DoSelectingProcess is a function that prompts the user to enter an item code.
 func DoSelectingProcess() string {
 	fmt.Println("What are you going to buy today :)")
 	fmt.Print("Please Enter Item Code > ")
@@ -17,6 +18,8 @@ func DoSelectingProcess() string {
 	return input
 }
 
+// DoDepositingProcess is a function that prompts the user to enter
+// an amount of money for depositing.
 func DoDepositingProcess() float64 {
 	fmt.Print("Please Amount of Money > ")
 
