@@ -1,9 +1,7 @@
 PROJECT_NAME := fsvm
 GO := go
 
-.PHONY: all build clean run test
-
-all: build
+.PHONY: build clean run test
 
 build:
 	@echo "Building $(PROJECT_NAME)..."
@@ -20,3 +18,11 @@ run: build
 test:
 	@echo "Running tests..."
 	$(GO) test ./...
+
+coverage:
+	@echo "Running tests with coverage..."
+	$(GO) test ./... --cover
+
+install-deps:
+	@echo "Installing dependencies..."
+	$(GO) mod download
